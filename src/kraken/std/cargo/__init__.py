@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Sequence
 
 from kraken.core import Project, Supplier
@@ -146,6 +147,7 @@ def cargo_bump_version(
     group: str | None = CARGO_BUILD_SUPPORT_GROUP_NAME,
     registry: str | None = None,
     project: Project | None = None,
+    cargo_toml_file: Path = Path("Cargo.toml"),
 ) -> CargoBumpVersionTask:
     """Get or create a task that bumps the version in `Cargo.toml`.
 
@@ -164,6 +166,7 @@ def cargo_bump_version(
         version=version,
         revert=revert,
         registry=registry,
+        cargo_toml_file=cargo_toml_file,
     )
 
 
@@ -183,7 +186,7 @@ def cargo_build(
         specified, the option is not specified and the default behaviour is used.
     :param env: Override variables for the build environment variables. Values in this dictionary override
         variables in :attr:`CargoProject.build_env`.
-    :param name: The name of the task. If not specified, defaults to `:cargoBuild{mode.capitalied()}`.
+    :param name: The name of the task. If not specified, defaults to `:cargoBuild{mode.capitalised()}`.
     :param version: Bump the Cargo.toml version temporarily while building to the given version."""
 
     assert mode in ("debug", "release"), repr(mode)
