@@ -60,23 +60,23 @@ class CargoMetadata:
     artifacts: list[Artifact]
 
     @classmethod
-    def read(cls, projectDir: Path) -> CargoMetadata:
+    def read(cls, project_dir: Path) -> CargoMetadata:
         result = subprocess.run(
-            ["cargo", "metadata", "--format-version=1", "--manifest-path", str(projectDir.joinpath("Cargo.toml"))],
+            ["cargo", "metadata", "--format-version=1", "--manifest-path", str(project_dir.joinpath("Cargo.toml"))],
             stdout=subprocess.PIPE,
         )
-        return cls.of(projectDir, json.loads(result.stdout.decode("utf-8")))
+        return cls.of(project_dir, json.loads(result.stdout.decode("utf-8")))
 
     @classmethod
     def of(cls, path: Path, data: dict[str, Any]) -> CargoMetadata:
-        workspaceMembers = []
+        workspace_members = []
         artifacts = []
         for package in data["packages"]:
             id = package["id"]
             if id in data["workspace_members"]:
-                workspaceMembers.append(
+                workspace_members.append(
                     WorkspaceMember(
-                        id, package["name"], package["version"], package["edition"], package["manifest_path"]
+                        id, package["name"], package["version"], package["edition"], Path(package["manifest_path"])
                     )
                 )
                 for target in package["targets"]:
@@ -85,7 +85,7 @@ class CargoMetadata:
                     elif "lib" in target["kind"]:
                         artifacts.append(Artifact(target["name"], target["src_path"], ArtifactKind.LIB))
 
-        return cls(path, data, workspaceMembers, artifacts)
+        return cls(path, data, workspace_members, artifacts)
 
 
 @dataclass
