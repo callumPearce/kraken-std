@@ -7,7 +7,7 @@ from kraken.core import Property, Task, TaskStatus
 
 class CargoFmtTask(Task):
     check: Property[bool] = Property.default(False)
-    all: Property[bool] = Property.default(False)
+    all_packages: Property[bool] = Property.default(False)
 
     def execute(self) -> TaskStatus:
         command = ["cargo", "fmt"]
