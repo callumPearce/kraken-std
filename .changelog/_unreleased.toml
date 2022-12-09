@@ -3,3 +3,9 @@ id = "3b3a2872-0721-4aad-bb66-85a92412f201"
 type = "feature"
 description = "Add `cargo_fmt(all_packages)` parameter"
 author = "callumPearce"
+
+[[entries]]
+id = "74349729-bbf6-43b4-bc55-26aea7ba79bc"
+type = "feature"
+description = "Fix preserve workspace_memebers in cargo manifest"
+author = "callumPearce"
